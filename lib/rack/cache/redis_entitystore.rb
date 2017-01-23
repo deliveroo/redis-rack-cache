@@ -1,5 +1,6 @@
 require 'rack/cache/entity_store'
 require 'redis-rack-cache/constants'
+require 'redis-rack-cache/resolver'
 
 module Rack
   module Cache
@@ -16,7 +17,8 @@ module Rack
         end
 
         def self.resolve(uri)
-          new ::Redis::Store::Factory.resolve(uri.to_s)
+          redis = ::Redis::Rack::Cache::Resolver.new(uri).resolve
+          new(redis)
         end
       end
 

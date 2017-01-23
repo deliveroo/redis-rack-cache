@@ -3,6 +3,7 @@ require 'rack/utils'
 require 'rack/cache/key'
 require 'rack/cache/meta_store'
 require 'redis-rack-cache/constants'
+require 'redis-rack-cache/resolver'
 
 module Rack
   module Cache
@@ -14,7 +15,8 @@ module Rack
         attr_reader :cache
 
         def self.resolve(uri)
-          new ::Redis::Store::Factory.resolve(uri.to_s)
+          redis = ::Redis::Rack::Cache::Resolver.new(uri).resolve
+          new(redis)
         end
       end
 
