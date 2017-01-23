@@ -1,4 +1,5 @@
 require 'redis-store'
+require 'redis/distributed_store_patch'
 require 'rack/cache'
 require 'rack/cache/redis_entitystore'
 require 'rack/cache/redis_metastore'

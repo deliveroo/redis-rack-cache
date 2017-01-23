@@ -18,13 +18,13 @@ module Rack
 
         def self.resolve(uri)
           redis = ::Redis::Rack::Cache::Resolver.new(uri).resolve
-          new(redis)
+          new(*redis)
         end
       end
 
       class Redis < RedisBase
         def initialize(server, options = {})
-          @cache = ::Redis::Store::Factory.create(server)
+          @cache = ::Redis::Store::Factory.create(server, options)
         end
 
         def exist?(key)

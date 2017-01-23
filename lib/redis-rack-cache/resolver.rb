@@ -13,7 +13,8 @@ class Redis
 
         def resolve
           if sharded?
-            get_shard_uris
+            uris = get_shard_uris
+            [uris, get_options(uris)]
           else
             @uri.to_s
           end
@@ -30,6 +31,10 @@ class Redis
           params.fetch("shards").map { |s| File.join(s.to_s, @uri.path) }
         end
 
+        def get_options(uris)
+          base = ::Redis::Store::Factory.resolve(uris.first)
+          base[:namespace] ? { namespace: base[:namespace] } : {}
+        end
       end
     end
   end
